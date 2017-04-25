@@ -1,0 +1,38 @@
+
+
+syntax = "proto3";
+package signaling;
+
+
+message Result {
+	enum Status {
+		OK = 0;
+		FAILED = 1;
+	}
+
+	string message = 1;
+	Status status = 2;
+}
+
+message SdpOffer {
+	string sdp = 1;
+}
+
+message SdpAnswer {
+	string sdp = 1;
+}
+
+message Empty {
+	bool block = 1;
+}
+
+service Signaling {
+	// Phone
+	rpc Start(SdpOffer) returns (stream SdpAnswer) {}
+
+	// Camera
+	rpc Wait(Empty) returns (stream SdpOffer) {}
+	rpc Join(SdpAnswer) returns (Empty) {}
+}
+
+
